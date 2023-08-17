@@ -1,0 +1,42 @@
+@use 'sass:meta';
+@use 'sass:string';
+
+// Remove leading, trailing or double slahes.
+// Mimic Node.js path.join normalization.
+// --------
+// @param [string] $path
+// @param [string] $slash
+// --------
+// @return [string]
+
+@function strip-slashes($path, $slash: '/') {
+  $result: '';
+
+  @if not(meta.type-of($path) == 'string') {
+    @return $result;
+  }
+
+  $length: string.length($path);
+
+  $index: string.index($path, $slash);
+  $nextchar: if($index, string.slice($path, $index + 1, $index + 1), '');
+  $match: $index and ($index == 1 or $index == $length or $nextchar == $slash);
+
+  @if (not $match) {
+    @return $path;
+  }
+
+  @for $i from 1 through $length {
+    $char: string.slice($path, $i, $i);
+    $nextchar: string.slice($path, $i + 1, $i + 1);
+
+    @if not(
+      $char == $slash and ($i == 1 or $i == $length or $nextchar == $slash)
+    )
+    {
+      $result: $result + $char;
+    }
+  }
+
+  @return strip-slashes($result);
+}

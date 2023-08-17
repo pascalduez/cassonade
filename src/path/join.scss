@@ -1,0 +1,38 @@
+@use 'sass:meta';
+@use 'sass:list';
+@use 'sass:string';
+@use './strip-slashes' as *;
+
+// Joins all given path segments together.
+// Mimic Node.js path.join.
+// --------
+// @param [list] $paths
+// @param [string] $separator
+// --------
+// @return [string]
+
+@function join($paths, $separator: '/') {
+  $length: list.length($paths);
+  $result: '';
+
+  @if $length < 1 {
+    @return $result;
+  }
+
+  @for $i from 1 through $length {
+    $path: list.nth($paths, $i);
+    $path: strip-slashes($path);
+
+    $result: $result +
+      $path +
+      if(
+        (meta.type-of($path) == string) and
+          (string.length($path) > 0) and
+          ($i < $length),
+        $separator,
+        ''
+      );
+  }
+
+  @return $result;
+}

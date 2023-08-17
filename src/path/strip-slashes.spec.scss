@@ -1,0 +1,17 @@
+@use 'true' as *;
+@use './strip-slashes' as *;
+
+@include describe('strip-slashes [function]') {
+  @include it('works') {
+    @include assert-equal(strip-slashes('test'), 'test');
+    @include assert-equal(strip-slashes('te/st'), 'te/st');
+    @include assert-equal(strip-slashes('te//st'), 'te/st');
+    @include assert-equal(strip-slashes('/test'), 'test');
+    @include assert-equal(strip-slashes('test/'), 'test');
+    @include assert-equal(strip-slashes('/test/'), 'test');
+    @include assert-equal(strip-slashes('/te/st/'), 'te/st');
+    @include assert-equal(strip-slashes('//test//'), 'test');
+    @include assert-equal(strip-slashes('//te/st//'), 'te/st');
+    @include assert-equal(strip-slashes('//te//st//'), 'te/st');
+  }
+}

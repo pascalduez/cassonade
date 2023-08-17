@@ -1,0 +1,23 @@
+@use 'sass:map';
+@use 'sass:list';
+
+// Searches the map for a given value
+// and returns the corresponding key if successful.
+// --------
+// @param [map] $map
+// @param [literal] $value
+// --------
+// @return [literal]
+
+@function search($map, $value) {
+  $keys: map.keys($map);
+  $values: map.values($map);
+  $index: list.index($values, $value);
+
+  @if not $index {
+    @warn 'No value found for `#{$value}` in map.';
+    @return false;
+  }
+
+  @return list.nth($keys, $index);
+}

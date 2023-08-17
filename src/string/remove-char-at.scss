@@ -1,0 +1,9 @@
+@use 'sass:string';
+
+@function remove-char-at($str, $char) {
+  $length: string.length($str);
+  $index: string.index($str, $char);
+
+  @return string.slice($str, 1, $index - 1) +
+    string.slice($str, $index + 1, $length);
+}

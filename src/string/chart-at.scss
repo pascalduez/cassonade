@@ -1,0 +1,5 @@
+@use 'sass:string';
+
+@function char-at($str, $index: 1) {
+  @return string.slice($str, $index, $index);
+}

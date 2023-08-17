@@ -1,0 +1,18 @@
+@use 'sass:map';
+
+// Fetch a deep value in a multi-level map.
+// --------
+// @source https://gist.github.com/KittyGiraudel/9933331
+// --------
+// @param [map] $map
+// @param [list] $keys
+// --------
+// @return [literal]
+
+@function fetch($map, $keys) {
+  @each $key in $keys {
+    $map: map.get($map, $key);
+  }
+
+  @return $map;
+}

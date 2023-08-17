@@ -1,0 +1,57 @@
+@use 'sass:map';
+@use 'sass:list';
+
+// Set or update a deep nested value in map.
+// --------
+// @param [map] $map
+// @param [list] $keys
+// @param [map] $new
+// --------
+// @return [literal]
+
+@function deep-merge($map, $keys, $new) {
+  $orig: $map;
+  $cache: ();
+  $length: list.length($keys);
+  $last: list.nth($keys, $length);
+
+  @if $length == 1 {
+    @return map.merge(
+      $map,
+      (
+        nth($keys, 1): $new,
+      )
+    );
+  }
+
+  @each $key in $keys {
+    $map: map.get($map, $key);
+    @if $key == $last {
+      $map: map.merge($map, $new);
+    }
+    $cache: list.append($cache, $map);
+  }
+
+  $i: $length;
+  @while $i > 1 {
+    $prev: $i - 1;
+    $cache: list.set-nth(
+      $cache,
+      $prev,
+      map.merge(
+        list.nth($cache, $prev),
+        (
+          list.nth($keys, $i): list.nth($cache, $i),
+        )
+      )
+    );
+    $i: $prev;
+  }
+
+  @return map.merge(
+    $orig,
+    (
+      list.nth($keys, 1): list.nth($cache, 1),
+    )
+  );
+}

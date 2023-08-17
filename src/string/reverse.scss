@@ -1,0 +1,18 @@
+@use 'sass:string';
+@use './char-at' as *;
+
+// Return a reversed string.
+// --------
+// @param [string] $str
+// --------
+// @return [string]
+
+@function reverse($str) {
+  $result: '';
+
+  @for $i from string.length($str) through 1 {
+    $result: $result + char-at($str, $i);
+  }
+
+  @return $result;
+}
