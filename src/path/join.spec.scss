@@ -3,9 +3,9 @@
 
 @include describe('join [function]') {
   @include it('works') {
-    @include assert-equal(join(('one', 'two', 'three')), 'one/two/three');
-    @include assert-equal(join(('one', 'two/', 'three')), 'one/two/three');
-    @include assert-equal(join(('one', 'tw/o', 'three')), 'one/tw/o/three');
-    @include assert-equal(join(('one', 'tw//o', 'three')), 'one/tw/o/three');
+    @include assert-equal(join('one', 'two', 'three'), 'one/two/three');
+    @include assert-equal(join('one', 'two/', 'three'), 'one/two/three');
+    @include assert-equal(join('one', 'tw/o', 'three'), 'one/tw/o/three');
+    @include assert-equal(join('one', 'tw//o', 'three'), 'one/tw/o/three');
   }
 }

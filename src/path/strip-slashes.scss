@@ -1,6 +1,8 @@
 @use 'sass:meta';
 @use 'sass:string';
 
+$separator: '/' !default;
+
 // Remove leading, trailing or double slahes.
 // Mimic Node.js path.join normalization.
 // --------
@@ -9,7 +11,7 @@
 // --------
 // @return [string]
 
-@function strip-slashes($path, $slash: '/') {
+@function strip-slashes($path, $slash: $separator) {
   $result: '';
 
   @if not(meta.type-of($path) == 'string') {

@@ -3,6 +3,8 @@
 @use 'sass:string';
 @use './strip-slashes' as *;
 
+$separator: '/' !default;
+
 // Joins all given path segments together.
 // Mimic Node.js path.join.
 // --------
@@ -11,7 +13,7 @@
 // --------
 // @return [string]
 
-@function join($paths, $separator: '/') {
+@function join($paths...) {
   $length: list.length($paths);
   $result: '';
 
