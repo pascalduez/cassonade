@@ -1,13 +1,15 @@
 @use 'sass:map';
 @use 'sass:list';
 
-// Set or update a deep nested value in map.
-// --------
-// @param [map] $map
-// @param [list] $keys
-// @param [map] $new
-// --------
-// @return [literal]
+/// Set or update a deep nested value in map.
+/// --------
+/// @group map
+/// --------
+/// @param {map} $map
+/// @param {list} $keys
+/// @param {map} $new
+/// --------
+/// @return {literal}
 
 @function deep-merge($map, $keys, $new) {
   $orig: $map;

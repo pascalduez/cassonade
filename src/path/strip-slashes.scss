@@ -3,13 +3,15 @@
 
 $separator: '/' !default;
 
-// Remove leading, trailing or double slahes.
-// Mimic Node.js path.join normalization.
-// --------
-// @param [string] $path
-// @param [string] $slash
-// --------
-// @return [string]
+/// Remove leading, trailing or double slahes.
+/// Mimic Node.js path.join normalization.
+/// --------
+/// @group path
+/// --------
+/// @param {string} $path
+/// @param {string} $slash [$separator]
+/// --------
+/// @return {string}
 
 @function strip-slashes($path, $slash: $separator) {
   $result: '';

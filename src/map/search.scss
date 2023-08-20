@@ -1,13 +1,15 @@
 @use 'sass:map';
 @use 'sass:list';
 
-// Searches the map for a given value
-// and returns the corresponding key if successful.
-// --------
-// @param [map] $map
-// @param [literal] $value
-// --------
-// @return [literal]
+/// Searches the map for a given value
+/// and returns the corresponding key if successful.
+/// --------
+/// @group map
+/// --------
+/// @param {map} $map
+/// @param {literal} $value
+/// --------
+/// @return {literal}
 
 @function search($map, $value) {
   $keys: map.keys($map);

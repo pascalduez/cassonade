@@ -5,13 +5,14 @@
 
 $separator: '/' !default;
 
-// Joins all given path segments together.
-// Mimic Node.js path.join.
-// --------
-// @param [list] $paths
-// @param [string] $separator
-// --------
-// @return [string]
+/// Joins all given path segments together.
+/// Mimic Node.js path.join.
+/// --------
+/// @group path
+/// --------
+/// @param {list} $paths
+/// --------
+/// @return {string}
 
 @function join($paths...) {
   $length: list.length($paths);

@@ -1,11 +1,13 @@
 @use 'sass:string';
 
-// Remove first `$char` occurrence found in `$str`.
-// --------
-// @param [string] $str
-// @param [string] $char
-// --------
-// @return [string]
+/// Remove first `$char` occurrence found in `$str`.
+/// --------
+/// @group string
+/// --------
+/// @param {string} $str
+/// @param {string} $char
+/// --------
+/// @return {string}
 
 @function remove-char-at($str, $char) {
   $length: string.length($str);

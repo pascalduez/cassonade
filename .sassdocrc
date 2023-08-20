@@ -1,0 +1,5 @@
+{
+  "verbose": true,
+  "dest": "./docs",
+  "no-update-notifier": true
+}

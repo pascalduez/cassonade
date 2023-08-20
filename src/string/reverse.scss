@@ -1,11 +1,13 @@
 @use 'sass:string';
 @use './char-at' as *;
 
-// Return a reversed string.
-// --------
-// @param [string] $str
-// --------
-// @return [string]
+/// Return a reversed string.
+/// --------
+/// @group string
+/// --------
+/// @param {string} $str
+/// --------
+/// @return {string}
 
 @function reverse($str) {
   $result: '';
