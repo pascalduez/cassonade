@@ -1,16 +1,30 @@
 @use 'true' as *;
 @use './strip-slashes' as *;
 
-@include describe('strip-slashes [function]') {
-  @include it('works') {
+@include describe('[function] strip-slashes') {
+  @include it('should leave other chars untouched') {
     @include assert-equal(strip-slashes('test'), 'test');
+  }
+
+  @include it('should properly remove leading slashes') {
+    @include assert-equal(strip-slashes('/test'), 'test');
+    @include assert-equal(strip-slashes('//test'), 'test');
+  }
+
+  @include it('should properly remove leading slashes') {
+    @include assert-equal(strip-slashes('test/'), 'test');
+    @include assert-equal(strip-slashes('test//'), 'test');
+  }
+
+  @include it('should properly remove leading and leading slashes') {
+    @include assert-equal(strip-slashes('/test/'), 'test');
+    @include assert-equal(strip-slashes('//test//'), 'test');
+  }
+
+  @include it('sould properly normalize middle slashes') {
     @include assert-equal(strip-slashes('te/st'), 'te/st');
     @include assert-equal(strip-slashes('te//st'), 'te/st');
-    @include assert-equal(strip-slashes('/test'), 'test');
-    @include assert-equal(strip-slashes('test/'), 'test');
-    @include assert-equal(strip-slashes('/test/'), 'test');
     @include assert-equal(strip-slashes('/te/st/'), 'te/st');
-    @include assert-equal(strip-slashes('//test//'), 'test');
     @include assert-equal(strip-slashes('//te/st//'), 'te/st');
     @include assert-equal(strip-slashes('//te//st//'), 'te/st');
   }

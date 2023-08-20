@@ -19,7 +19,7 @@
     @return map.merge(
       $map,
       (
-        nth($keys, 1): $new,
+        list.nth($keys, 1): $new,
       )
     );
   }

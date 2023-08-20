@@ -1,0 +1,17 @@
+@use 'true' as *;
+@use './char-at' as *;
+
+@include describe('[function] char-at]') {
+  @include it('should properly return char found at index') {
+    @include assert-equal(char-at('cassonade', 1), 'c');
+    @include assert-equal(char-at('cassonade', 5), 'o');
+    @include assert-equal(char-at('cassonade', -2), 'd');
+  }
+
+  @include it(
+    'should properly return an empty string for out of range indexes'
+  ) {
+    @include assert-equal(char-at('cassonade', 12), '');
+    @include assert-equal(char-at('cassonade', -12), '');
+  }
+}

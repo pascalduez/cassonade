@@ -1,0 +1,8 @@
+@use 'true' as *;
+@use './reverse' as *;
+
+@include describe('[function] reverse]') {
+  @include it('should properly reverse a string') {
+    @include assert-equal(reverse('cassonade'), 'edanossac');
+  }
+}

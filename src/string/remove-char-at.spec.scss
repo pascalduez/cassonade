@@ -1,0 +1,16 @@
+@use 'true' as *;
+@use './remove-char-at' as *;
+
+@include describe('[function] remove-char-at]') {
+  @include it('should properly remove the fisrt found char') {
+    @include assert-equal(remove-char-at('cassonade', 'c'), 'assonade');
+    @include assert-equal(remove-char-at('cassonade', 'a'), 'cssonade');
+    @include assert-equal(remove-char-at('cassonade', 'e'), 'cassonad');
+  }
+
+  @include it(
+    'should properly return the untouched string if no char is found'
+  ) {
+    @include assert-equal(remove-char-at('cassonade', 'g'), 'cassonade');
+  }
+}
