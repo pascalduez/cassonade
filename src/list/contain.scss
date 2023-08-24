@@ -1,0 +1,14 @@
+@use 'sass:list';
+
+/// Return whether `$value` is contained in `$list`
+/// --------
+/// @group list
+/// --------
+/// @param {list} $list
+/// @param {value} $value
+/// --------
+/// @return {boolean}
+
+@function contain($list, $value) {
+  @return not not list.index($list, $value);
+}

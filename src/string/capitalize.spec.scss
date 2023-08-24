@@ -1,0 +1,10 @@
+@use 'true' as *;
+@use './capitalize' as *;
+
+@include describe('[function] capitalize]') {
+  @include it('should properly set the first char in cap') {
+    @include assert-equal(capitalize('cassonade'), 'Cassonade');
+    @include assert-equal(capitalize('Cassonade'), 'Cassonade');
+    @include assert-equal(capitalize('cASSonade'), 'CASSonade');
+  }
+}

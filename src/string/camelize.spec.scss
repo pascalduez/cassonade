@@ -1,0 +1,16 @@
+@use 'true' as *;
+@use './camelize' as *;
+
+@include describe('[function] camelize]') {
+  @include it('should leave untouched single words') {
+    @include assert-equal(camelize('cassonade'), 'cassonade');
+    @include assert-equal(camelize('Cassonade'), 'Cassonade');
+    @include assert-equal(camelize('CassonadE'), 'CassonadE');
+  }
+
+  @include it('should properly camelize split words') {
+    @include assert-equal(camelize('cass ona de'), 'cassOnaDe');
+    @include assert-equal(camelize('cass-ona-de'), 'cassOnaDe');
+    @include assert-equal(camelize('cass_ona_de'), 'cassOnaDe');
+  }
+}

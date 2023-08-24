@@ -1,0 +1,31 @@
+@use 'sass:string';
+@use './capitalize' as *;
+@use '../list/contain' as *;
+
+/// Camelize string
+/// --------
+/// @group string
+/// ---------
+/// @param {string} $str
+/// ---------
+/// @return {string}
+
+@function camelize($str) {
+  $progress: $str;
+  $result: '';
+  $exclude: ' ', '-', '–', '—', '_', ',', ';', ':', '.';
+
+  @while string.length($progress) > 0 {
+    $char: string.slice($progress, 1, 1);
+
+    @if contain($exclude, $char) {
+      $progress: capitalize(string.slice($progress, 2, 2)) +
+        string.slice($progress, 3);
+    } @else {
+      $result: $result + $char;
+      $progress: string.slice($progress, 2);
+    }
+  }
+
+  @return $result;
+}

@@ -1,0 +1,13 @@
+@use 'sass:math';
+
+/// Remove unit from `$num`
+/// --------
+/// @group math
+/// --------
+/// @param {number} $num
+/// --------
+/// @return {number}
+
+@function strip-unit($num) {
+  @return math.div($num, ($num * 0 + 1));
+}

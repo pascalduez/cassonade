@@ -1,0 +1,16 @@
+@use 'true' as *;
+@use './strip-unit' as *;
+
+@include describe('[function] strip-unit]') {
+  @include it('should leave untouched unitless numbers') {
+    @include assert-equal(strip-unit(1), 1);
+    @include assert-equal(strip-unit(8), 8);
+    @include assert-equal(strip-unit(2), 2);
+  }
+
+  @include it('should properly strip unit from numbers') {
+    @include assert-equal(strip-unit(1px), 1);
+    @include assert-equal(strip-unit(8rem), 8);
+    @include assert-equal(strip-unit(2rlh), 2);
+  }
+}
