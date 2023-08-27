@@ -1,0 +1,33 @@
+@use 'sass:meta';
+@use 'sass:string';
+
+/// A Sass micro-templating function.
+/// --------
+/// @group string
+/// --------
+/// @param {string} $format
+/// @param {arglist | map} $args
+/// --------
+/// @return {string}
+
+@function template($format, $args...) {
+  $result: $format;
+
+  @each $key, $value in meta.keywords($args) {
+    $token: '{{#{$key}}}';
+    $length: string.length($token);
+    $index: string.index($result, $token);
+
+    @if $index {
+      $result: if($index > 1, string.slice($result, 1, $index - 1), '') +
+        $value +
+        string.slice($result, ($index + $length));
+
+      @if string.index($result, $token) {
+        $result: template($result, $args...);
+      }
+    }
+  }
+
+  @return $result;
+}

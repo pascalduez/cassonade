@@ -1,5 +1,6 @@
+@forward './camelize';
+@forward './capitalize';
 @forward './char-at';
 @forward './remove-char-at';
 @forward './reverse';
-@forward './capitalize';
-@forward './camelize';
+@forward './template';

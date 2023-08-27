@@ -1,0 +1,53 @@
+@use 'sass:meta';
+@use 'sass:math';
+@use './fact' as *;
+
+/// Returns whether `$n` is a prime number.
+/// --------
+/// @group math
+/// --------
+/// @param {number} $n
+/// --------
+/// @return {bool}
+
+@function is-prime($n) {
+  @if meta.type-of($n) != number {
+    @warn "#{$n} is not a number for `is-prime`.";
+    @return null;
+  }
+
+  @if $n < 2 or $n != math.floor($n) {
+    @return false;
+  }
+
+  @if $n % 2 == 0 {
+    @return $n == 2;
+  }
+  @if $n % 3 == 0 {
+    @return $n == 3;
+  }
+
+  $i: 5;
+  $m: math.ceil(math.sqrt($n));
+  @while $i <= $m {
+    @if $n % $i == 0 or $n % ($i + 2) == 0 {
+      @return false;
+    }
+    $i: $i + 6;
+  }
+
+  @return true;
+}
+
+// @function is-prime($n) {
+//   @if meta.type-of($n) != number {
+//     @warn "#{$n} is not a number for `is-prime`.";
+//     @return null;
+//   }
+
+//   @if $n < 2 or $n != math.floor($n) {
+//     @return false;
+//   }
+
+//   @return fact($n - 1) % $n == $n - 1;
+// }

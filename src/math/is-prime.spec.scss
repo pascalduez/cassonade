@@ -1,0 +1,25 @@
+@use 'true' as *;
+@use './is-prime' as *;
+
+$fixture: (
+  7: true,
+  10: false,
+  37: true,
+  60: false,
+  373: true,
+  390: false,
+  1427: true,
+  1683: false,
+  7879: true,
+  7881: false,
+  2011: true,
+  // 9007199254740881: true,
+);
+
+@include describe('[function] is-prime]') {
+  @include it('should properly test for prime numbers') {
+    @each $input, $expected in $fixture {
+      @include assert-equal(is-prime($input), $expected);
+    }
+  }
+}

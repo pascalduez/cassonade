@@ -1,0 +1,39 @@
+@use 'true' as *;
+@use './template' as *;
+
+@include describe('[function] template]') {
+  @include it('should properly fill a template from arg list') {
+    @include assert-equal(
+      template('Hello {{surname}}, {{name}}.', $surname: Jules, $name: Verne),
+      'Hello Jules, Verne.'
+    );
+  }
+
+  @include it('should properly fill a template from a map') {
+    @include assert-equal(
+      template(
+        'Hello {{surname}}, {{name}}.',
+        (surname: Jules, name: Verne)...
+      ),
+      'Hello Jules, Verne.'
+    );
+  }
+
+  @include it('should properly fill a template with repeating tokens') {
+    @include assert-equal(
+      template('{{name}} {{name}} {{name}}', $surname: Jules, $name: Verne),
+      'Verne Verne Verne'
+    );
+  }
+
+  @include it('should leave not found tokens untouched') {
+    @include assert-equal(
+      template(
+        '{{names}} {{name}} {{surname}} {{surnames}}',
+        $surname: Jules,
+        $name: Verne
+      ),
+      '{{names}} Verne Jules {{surnames}}'
+    );
+  }
+}

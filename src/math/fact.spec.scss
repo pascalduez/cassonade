@@ -1,0 +1,23 @@
+@use 'true' as *;
+@use './fact' as *;
+
+$fixture: (
+  0: 1,
+  1: 1,
+  2: 2,
+  3: 6,
+  4: 24,
+  5: 120,
+  6: 720,
+  7: 5040,
+  8: 40320,
+  9: 362880,
+);
+
+@include describe('[function] fact]') {
+  @include it('should properly return the factorial of given number') {
+    @each $input, $expected in $fixture {
+      @include assert-equal(fact($input), $expected);
+    }
+  }
+}
