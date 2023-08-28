@@ -1,0 +1,21 @@
+@use 'true' as *;
+@use './diff' as *;
+
+$fixture: (webkit, khtml, moz, ms, o);
+
+@include describe('[function] diff]') {
+  @include it('should properly return a diffed list') {
+    @include assert-equal(diff($fixture, o, ms), (webkit, khtml, moz));
+    @include assert-equal(diff($fixture, (webkit)), (khtml, moz, ms, o));
+  }
+
+  @include it(
+    "should leave the original list untouched if there's nothing to diff"
+  ) {
+    @include assert-equal(diff($fixture), $fixture);
+  }
+
+  @include it('should preserve the original list separator') {
+    @include assert-equal(diff((one two three), two), (one three));
+  }
+}

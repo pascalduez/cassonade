@@ -6,7 +6,7 @@
 /// @param {number} $max - maximum range value
 /// @param {number} $value - the value to be tested
 /// --------
-/// @return {boolean}
+/// @return {bool}
 
 @function in-range($min, $max, $value) {
   @return ($value >= $min) and ($value <= $max);

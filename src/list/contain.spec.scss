@@ -2,12 +2,12 @@
 @use './contain' as *;
 
 @include describe('[function] contain]') {
-  @include it('return true if the value is found in list') {
+  @include it('should return true if the value is found in list') {
     @include assert-equal(contain(('one', 'two', 'three'), 'two'), true);
     @include assert-equal(contain((1, 2, 3), 2), true);
   }
 
-  @include it('return false if the value is not found in list') {
+  @include it('should return false if the value is not found in list') {
     @include assert-equal(contain(('one', 'two', 'three'), 'four'), false);
     @include assert-equal(contain((1, 2, 3), 4), false);
   }

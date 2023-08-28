@@ -1,0 +1,23 @@
+@use 'sass:list';
+
+/// Testing for empty values.
+/// In Sass "", 0, () evaluate to true.
+/// --------
+/// @group meta
+/// --------
+/// @param {literal} $value
+/// --------
+/// @return {bool}
+
+@function empty($value) {
+  // prettier-ignore
+  @if not $value 
+      or $value == "" 
+      or $value == 0
+      or $value == ()
+      or list.length($value) == 0 {
+    @return true;
+  }
+
+  @return false;
+}

@@ -1,0 +1,10 @@
+@use 'true' as *;
+@use './uncapitalize' as *;
+
+@include describe('[function] uncapitalize]') {
+  @include it('should properly set the first char in cap') {
+    @include assert-equal(uncapitalize('cassonade'), 'cassonade');
+    @include assert-equal(uncapitalize('Cassonade'), 'cassonade');
+    @include assert-equal(uncapitalize('CASSonade'), 'cASSonade');
+  }
+}

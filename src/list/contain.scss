@@ -5,9 +5,9 @@
 /// @group list
 /// --------
 /// @param {list} $list
-/// @param {value} $value
+/// @param {literal} $value
 /// --------
-/// @return {boolean}
+/// @return {bool}
 
 @function contain($list, $value) {
   @return not not list.index($list, $value);

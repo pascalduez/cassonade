@@ -1,0 +1,889 @@
+[
+  {
+    "description": "Return whether `$value` is contained in `$list`\n",
+    "commentRange": {
+      "start": 3,
+      "end": 10
+    },
+    "context": {
+      "type": "function",
+      "name": "contain",
+      "code": "\n  @return not not list.index($list, $value);\n",
+      "line": {
+        "start": 12,
+        "end": 14
+      }
+    },
+    "group": [
+      "list"
+    ],
+    "parameter": [
+      {
+        "type": "list",
+        "name": "list"
+      },
+      {
+        "type": "literal",
+        "name": "value"
+      }
+    ],
+    "return": {
+      "type": "bool"
+    },
+    "access": "public",
+    "require": [],
+    "file": {
+      "path": "list/contain.scss",
+      "name": "contain.scss"
+    },
+    "usedBy": [
+      {
+        "description": "Camelize string\n",
+        "context": {
+          "type": "function",
+          "name": "camelize",
+          "code": "\n  $progress: $str;\n  $result: '';\n  $exclude: ' ', '-', '–', '—', '_', ',', ';', ':', '.';\n\n  @while string.length($progress) > 0 {\n    $char: string.slice($progress, 1, 1);\n\n    @if contain($exclude, $char) {\n      $progress: capitalize(string.slice($progress, 2, 2)) +\n        string.slice($progress, 3);\n    } @else {\n      $result: $result + $char;\n      $progress: string.slice($progress, 2);\n    }\n  }\n\n  @return $result;\n",
+          "line": {
+            "start": 13,
+            "end": 31
+          }
+        }
+      }
+    ]
+  },
+  {
+    "description": "Returns a list containing all the entries from `$list`\nthat are not present in any of the other `$lists`.\n",
+    "commentRange": {
+      "start": 3,
+      "end": 11
+    },
+    "context": {
+      "type": "function",
+      "name": "diff",
+      "code": "\n  $result: $list;\n\n  @each $list in $lists {\n    $temp: ();\n\n    @each $item in $result {\n      @if not list.index($list, $item) {\n        $temp: list.append($temp, $item, $separator: list.separator($result));\n      }\n    }\n\n    $result: $temp;\n  }\n\n  @return if(list.length($result) == 1, list.nth($result, 1), $result);\n",
+      "line": {
+        "start": 13,
+        "end": 29
+      }
+    },
+    "group": [
+      "list"
+    ],
+    "parameter": [
+      {
+        "type": "list",
+        "name": "list"
+      },
+      {
+        "type": "arglist",
+        "name": "lists"
+      }
+    ],
+    "return": {
+      "type": "list"
+    },
+    "access": "public",
+    "require": [],
+    "file": {
+      "path": "list/diff.scss",
+      "name": "diff.scss"
+    }
+  },
+  {
+    "description": "Set or update a deep nested value in map.\n",
+    "commentRange": {
+      "start": 4,
+      "end": 12
+    },
+    "context": {
+      "type": "function",
+      "name": "deep-merge",
+      "code": "\n  $orig: $map;\n  $cache: ();\n  $length: list.length($keys);\n  $last: list.nth($keys, $length);\n\n  @if $length == 1 {\n    @return map.merge(\n      $map,\n      (\n        list.nth($keys, 1): $new,\n      )\n    );\n  }\n\n  @each $key in $keys {\n    $map: map.get($map, $key);\n    @if $key == $last {\n      $map: map.merge($map, $new);\n    }\n    $cache: list.append($cache, $map);\n  }\n\n  $i: $length;\n  @while $i > 1 {\n    $prev: $i - 1;\n    $cache: list.set-nth(\n      $cache,\n      $prev,\n      map.merge(\n        list.nth($cache, $prev),\n        (\n          list.nth($keys, $i): list.nth($cache, $i),\n        )\n      )\n    );\n    $i: $prev;\n  }\n\n  @return map.merge(\n    $orig,\n    (\n      list.nth($keys, 1): list.nth($cache, 1),\n    )\n  );\n",
+      "line": {
+        "start": 14,
+        "end": 59
+      }
+    },
+    "group": [
+      "map"
+    ],
+    "parameter": [
+      {
+        "type": "map",
+        "name": "map"
+      },
+      {
+        "type": "list",
+        "name": "keys"
+      },
+      {
+        "type": "map",
+        "name": "new"
+      }
+    ],
+    "return": {
+      "type": "literal"
+    },
+    "access": "public",
+    "require": [],
+    "file": {
+      "path": "map/deep-merge.scss",
+      "name": "deep-merge.scss"
+    }
+  },
+  {
+    "description": "Fetch a deep value in a multi-level map.\n",
+    "commentRange": {
+      "start": 3,
+      "end": 12
+    },
+    "context": {
+      "type": "function",
+      "name": "fetch",
+      "code": "\n  @each $key in $keys {\n    $map: map.get($map, $key);\n  }\n\n  @return $map;\n",
+      "line": {
+        "start": 14,
+        "end": 20
+      }
+    },
+    "group": [
+      "map"
+    ],
+    "author": [
+      "https://gist.github.com/KittyGiraudel/9933331"
+    ],
+    "parameter": [
+      {
+        "type": "map",
+        "name": "map"
+      },
+      {
+        "type": "list",
+        "name": "keys"
+      }
+    ],
+    "return": {
+      "type": "literal"
+    },
+    "access": "public",
+    "require": [],
+    "file": {
+      "path": "map/fetch.scss",
+      "name": "fetch.scss"
+    }
+  },
+  {
+    "description": "Searches the map for a given value\nand returns the corresponding key if successful.\n",
+    "commentRange": {
+      "start": 4,
+      "end": 12
+    },
+    "context": {
+      "type": "function",
+      "name": "search",
+      "code": "\n  $keys: map.keys($map);\n  $values: map.values($map);\n  $index: list.index($values, $value);\n\n  @if not $index {\n    @warn 'No value found for `#{$value}` in map.';\n    @return false;\n  }\n\n  @return list.nth($keys, $index);\n",
+      "line": {
+        "start": 14,
+        "end": 25
+      }
+    },
+    "group": [
+      "map"
+    ],
+    "parameter": [
+      {
+        "type": "map",
+        "name": "map"
+      },
+      {
+        "type": "literal",
+        "name": "value"
+      }
+    ],
+    "return": {
+      "type": "literal"
+    },
+    "access": "public",
+    "require": [],
+    "file": {
+      "path": "map/search.scss",
+      "name": "search.scss"
+    }
+  },
+  {
+    "description": "Returns the factorial of a non-negative integer.\n",
+    "commentRange": {
+      "start": 3,
+      "end": 9
+    },
+    "context": {
+      "type": "function",
+      "name": "fact",
+      "code": "\n  @if $n < 0 or $n != math.floor($n) {\n    @warn \"#{$n} is not a positive integer for `fact`.\";\n    @return null;\n  }\n\n  $ret: 1;\n  @while $n > 0 {\n    $ret: $ret * $n;\n    $n: $n - 1;\n  }\n\n  @return $ret;\n",
+      "line": {
+        "start": 11,
+        "end": 24
+      }
+    },
+    "group": [
+      "math"
+    ],
+    "parameter": [
+      {
+        "type": "number",
+        "name": "n",
+        "description": "a non-negative integer"
+      }
+    ],
+    "return": {
+      "type": "number"
+    },
+    "access": "public",
+    "require": [],
+    "file": {
+      "path": "math/fact.scss",
+      "name": "fact.scss"
+    }
+  },
+  {
+    "description": "Test whether `$value` is containedd between `$min` and `$max`.\n",
+    "commentRange": {
+      "start": 1,
+      "end": 9
+    },
+    "context": {
+      "type": "function",
+      "name": "in-range",
+      "code": "\n  @return ($value >= $min) and ($value <= $max);\n",
+      "line": {
+        "start": 11,
+        "end": 13
+      }
+    },
+    "group": [
+      "math"
+    ],
+    "parameter": [
+      {
+        "type": "number",
+        "name": "min",
+        "description": "minimum range value"
+      },
+      {
+        "type": "number",
+        "name": "max",
+        "description": "maximum range value"
+      },
+      {
+        "type": "number",
+        "name": "value",
+        "description": "the value to be tested"
+      }
+    ],
+    "return": {
+      "type": "bool"
+    },
+    "access": "public",
+    "require": [],
+    "file": {
+      "path": "math/in-range.scss",
+      "name": "in-range.scss"
+    }
+  },
+  {
+    "description": "Returns whether `$n` is a prime number.\n",
+    "commentRange": {
+      "start": 5,
+      "end": 11
+    },
+    "context": {
+      "type": "function",
+      "name": "is-prime",
+      "code": "\n  @if meta.type-of($n) != number {\n    @warn \"#{$n} is not a number for `is-prime`.\";\n    @return null;\n  }\n\n  @if $n < 2 or $n != math.floor($n) {\n    @return false;\n  }\n\n  @if $n % 2 == 0 {\n    @return $n == 2;\n  }\n  @if $n % 3 == 0 {\n    @return $n == 3;\n  }\n\n  $i: 5;\n  $m: math.ceil(math.sqrt($n));\n  @while $i <= $m {\n    @if $n % $i == 0 or $n % ($i + 2) == 0 {\n      @return false;\n    }\n    $i: $i + 6;\n  }\n\n  @return true;\n",
+      "line": {
+        "start": 13,
+        "end": 40
+      }
+    },
+    "group": [
+      "math"
+    ],
+    "parameter": [
+      {
+        "type": "number",
+        "name": "n"
+      }
+    ],
+    "return": {
+      "type": "bool"
+    },
+    "access": "public",
+    "require": [],
+    "file": {
+      "path": "math/is-prime.scss",
+      "name": "is-prime.scss"
+    }
+  },
+  {
+    "description": "Remove unit from `$num`\n",
+    "commentRange": {
+      "start": 3,
+      "end": 9
+    },
+    "context": {
+      "type": "function",
+      "name": "strip-unit",
+      "code": "\n  @return math.div($num, ($num * 0 + 1));\n",
+      "line": {
+        "start": 11,
+        "end": 13
+      }
+    },
+    "group": [
+      "math"
+    ],
+    "parameter": [
+      {
+        "type": "number",
+        "name": "num"
+      }
+    ],
+    "return": {
+      "type": "number"
+    },
+    "access": "public",
+    "require": [],
+    "file": {
+      "path": "math/strip-unit.scss",
+      "name": "strip-unit.scss"
+    }
+  },
+  {
+    "description": "Testing for empty values.\nIn Sass \"\", 0, () evaluate to true.\n",
+    "commentRange": {
+      "start": 3,
+      "end": 10
+    },
+    "context": {
+      "type": "function",
+      "name": "empty",
+      "code": "\n  // prettier-ignore\n  @if not $value \n      or $value == \"\" \n      or $value == 0\n      or $value == ()\n      or list.length($value) == 0 {\n    @return true;\n  }\n\n  @return false;\n",
+      "line": {
+        "start": 12,
+        "end": 23
+      }
+    },
+    "group": [
+      "meta"
+    ],
+    "parameter": [
+      {
+        "type": "literal",
+        "name": "value"
+      }
+    ],
+    "return": {
+      "type": "bool"
+    },
+    "access": "public",
+    "require": [],
+    "file": {
+      "path": "meta/empty.scss",
+      "name": "empty.scss"
+    }
+  },
+  {
+    "description": "Joins all given path segments together.\nMimic Node.js path.join.\n",
+    "commentRange": {
+      "start": 8,
+      "end": 15
+    },
+    "context": {
+      "type": "function",
+      "name": "join",
+      "code": "\n  $length: list.length($paths);\n  $result: '';\n\n  @if $length < 1 {\n    @return $result;\n  }\n\n  @for $i from 1 through $length {\n    $path: list.nth($paths, $i);\n    $path: strip-slashes($path);\n\n    $result: $result +\n      $path +\n      if(\n        (meta.type-of($path) == string) and\n          (string.length($path) > 0) and\n          ($i < $length),\n        $separator,\n        ''\n      );\n  }\n\n  @return $result;\n",
+      "line": {
+        "start": 17,
+        "end": 41
+      }
+    },
+    "group": [
+      "path"
+    ],
+    "parameter": [
+      {
+        "type": "list",
+        "name": "paths"
+      }
+    ],
+    "return": {
+      "type": "string"
+    },
+    "access": "public",
+    "require": [
+      {
+        "type": "function",
+        "name": "strip-slashes"
+      }
+    ],
+    "file": {
+      "path": "path/join.scss",
+      "name": "join.scss"
+    }
+  },
+  {
+    "description": "Remove leading, trailing or double slahes.\nMimic Node.js path.join normalization.\n",
+    "commentRange": {
+      "start": 6,
+      "end": 14
+    },
+    "context": {
+      "type": "function",
+      "name": "strip-slashes",
+      "code": "\n  $result: '';\n\n  @if not(meta.type-of($path) == 'string') {\n    @return $result;\n  }\n\n  $length: string.length($path);\n\n  $index: string.index($path, $slash);\n  $nextchar: if($index, string.slice($path, $index + 1, $index + 1), '');\n  $match: $index and ($index == 1 or $index == $length or $nextchar == $slash);\n\n  @if (not $match) {\n    @return $path;\n  }\n\n  @for $i from 1 through $length {\n    $char: string.slice($path, $i, $i);\n    $nextchar: string.slice($path, $i + 1, $i + 1);\n\n    @if not(\n      $char == $slash and ($i == 1 or $i == $length or $nextchar == $slash)\n    )\n    {\n      $result: $result + $char;\n    }\n  }\n\n  @return strip-slashes($result);\n",
+      "line": {
+        "start": 16,
+        "end": 46
+      }
+    },
+    "group": [
+      "path"
+    ],
+    "parameter": [
+      {
+        "type": "string",
+        "name": "path"
+      },
+      {
+        "type": "string",
+        "name": "slash",
+        "default": "$separator"
+      }
+    ],
+    "return": {
+      "type": "string"
+    },
+    "access": "public",
+    "require": [],
+    "file": {
+      "path": "path/strip-slashes.scss",
+      "name": "strip-slashes.scss"
+    },
+    "usedBy": [
+      {
+        "description": "Joins all given path segments together.\nMimic Node.js path.join.\n",
+        "context": {
+          "type": "function",
+          "name": "join",
+          "code": "\n  $length: list.length($paths);\n  $result: '';\n\n  @if $length < 1 {\n    @return $result;\n  }\n\n  @for $i from 1 through $length {\n    $path: list.nth($paths, $i);\n    $path: strip-slashes($path);\n\n    $result: $result +\n      $path +\n      if(\n        (meta.type-of($path) == string) and\n          (string.length($path) > 0) and\n          ($i < $length),\n        $separator,\n        ''\n      );\n  }\n\n  @return $result;\n",
+          "line": {
+            "start": 17,
+            "end": 41
+          }
+        }
+      }
+    ]
+  },
+  {
+    "description": "Camelize string\n",
+    "commentRange": {
+      "start": 5,
+      "end": 11
+    },
+    "context": {
+      "type": "function",
+      "name": "camelize",
+      "code": "\n  $progress: $str;\n  $result: '';\n  $exclude: ' ', '-', '–', '—', '_', ',', ';', ':', '.';\n\n  @while string.length($progress) > 0 {\n    $char: string.slice($progress, 1, 1);\n\n    @if contain($exclude, $char) {\n      $progress: capitalize(string.slice($progress, 2, 2)) +\n        string.slice($progress, 3);\n    } @else {\n      $result: $result + $char;\n      $progress: string.slice($progress, 2);\n    }\n  }\n\n  @return $result;\n",
+      "line": {
+        "start": 13,
+        "end": 31
+      }
+    },
+    "group": [
+      "string"
+    ],
+    "parameter": [
+      {
+        "type": "string",
+        "name": "str"
+      }
+    ],
+    "return": {
+      "type": "string"
+    },
+    "access": "public",
+    "require": [
+      {
+        "type": "function",
+        "name": "contain"
+      },
+      {
+        "type": "function",
+        "name": "capitalize"
+      }
+    ],
+    "file": {
+      "path": "string/camelize.scss",
+      "name": "camelize.scss"
+    }
+  },
+  {
+    "description": "Capitalize a string.\n",
+    "commentRange": {
+      "start": 3,
+      "end": 9
+    },
+    "context": {
+      "type": "function",
+      "name": "capitalize",
+      "code": "\n  @return string.to-upper-case(string.slice($str, 1, 1)) + string.slice($str, 2);\n",
+      "line": {
+        "start": 11,
+        "end": 13
+      }
+    },
+    "group": [
+      "string"
+    ],
+    "parameter": [
+      {
+        "type": "string",
+        "name": "str"
+      }
+    ],
+    "return": {
+      "type": "string"
+    },
+    "access": "public",
+    "require": [],
+    "file": {
+      "path": "string/capitalize.scss",
+      "name": "capitalize.scss"
+    },
+    "aliased": [
+      "ucfirst"
+    ],
+    "aliasedGroup": [
+      {
+        "group": [
+          "undefined"
+        ],
+        "name": "ucfirst"
+      }
+    ],
+    "usedBy": [
+      {
+        "description": "Camelize string\n",
+        "context": {
+          "type": "function",
+          "name": "camelize",
+          "code": "\n  $progress: $str;\n  $result: '';\n  $exclude: ' ', '-', '–', '—', '_', ',', ';', ':', '.';\n\n  @while string.length($progress) > 0 {\n    $char: string.slice($progress, 1, 1);\n\n    @if contain($exclude, $char) {\n      $progress: capitalize(string.slice($progress, 2, 2)) +\n        string.slice($progress, 3);\n    } @else {\n      $result: $result + $char;\n      $progress: string.slice($progress, 2);\n    }\n  }\n\n  @return $result;\n",
+          "line": {
+            "start": 13,
+            "end": 31
+          }
+        }
+      },
+      {
+        "description": "",
+        "context": {
+          "type": "function",
+          "name": "ucfirst",
+          "code": "\n  @return capitalize($string);\n",
+          "line": {
+            "start": 17,
+            "end": 19
+          }
+        }
+      }
+    ]
+  },
+  {
+    "description": "Return found char at `$index` in given `$str`.\n",
+    "commentRange": {
+      "start": 3,
+      "end": 10
+    },
+    "context": {
+      "type": "function",
+      "name": "char-at",
+      "code": "\n  @return string.slice($str, $index, $index);\n",
+      "line": {
+        "start": 12,
+        "end": 14
+      }
+    },
+    "group": [
+      "string"
+    ],
+    "parameter": [
+      {
+        "type": "string",
+        "name": "str"
+      },
+      {
+        "type": "number",
+        "name": "index"
+      }
+    ],
+    "return": {
+      "type": "string"
+    },
+    "access": "public",
+    "require": [],
+    "file": {
+      "path": "string/char-at.scss",
+      "name": "char-at.scss"
+    },
+    "usedBy": [
+      {
+        "description": "Return a reversed string.\n",
+        "context": {
+          "type": "function",
+          "name": "reverse",
+          "code": "\n  $result: '';\n\n  @for $i from string.length($str) through 1 {\n    $result: $result + char-at($str, $i);\n  }\n\n  @return $result;\n",
+          "line": {
+            "start": 12,
+            "end": 20
+          }
+        }
+      }
+    ]
+  },
+  {
+    "description": "Remove first `$char` occurrence found in `$str`.\n",
+    "commentRange": {
+      "start": 3,
+      "end": 10
+    },
+    "context": {
+      "type": "function",
+      "name": "remove-char-at",
+      "code": "\n  $length: string.length($str);\n  $index: string.index($str, $char);\n\n  @if not $index {\n    @return $str;\n  }\n\n  @return string.slice($str, 1, $index - 1) +\n    string.slice($str, $index + 1, $length);\n",
+      "line": {
+        "start": 12,
+        "end": 22
+      }
+    },
+    "group": [
+      "string"
+    ],
+    "parameter": [
+      {
+        "type": "string",
+        "name": "str"
+      },
+      {
+        "type": "string",
+        "name": "char"
+      }
+    ],
+    "return": {
+      "type": "string"
+    },
+    "access": "public",
+    "require": [],
+    "file": {
+      "path": "string/remove-char-at.scss",
+      "name": "remove-char-at.scss"
+    }
+  },
+  {
+    "description": "Return a reversed string.\n",
+    "commentRange": {
+      "start": 4,
+      "end": 10
+    },
+    "context": {
+      "type": "function",
+      "name": "reverse",
+      "code": "\n  $result: '';\n\n  @for $i from string.length($str) through 1 {\n    $result: $result + char-at($str, $i);\n  }\n\n  @return $result;\n",
+      "line": {
+        "start": 12,
+        "end": 20
+      }
+    },
+    "group": [
+      "string"
+    ],
+    "parameter": [
+      {
+        "type": "string",
+        "name": "str"
+      }
+    ],
+    "return": {
+      "type": "string"
+    },
+    "access": "public",
+    "require": [
+      {
+        "type": "function",
+        "name": "char-at"
+      }
+    ],
+    "file": {
+      "path": "string/reverse.scss",
+      "name": "reverse.scss"
+    }
+  },
+  {
+    "description": "A Sass micro-templating function.\n",
+    "commentRange": {
+      "start": 4,
+      "end": 11
+    },
+    "context": {
+      "type": "function",
+      "name": "template",
+      "code": "\n  $result: $format;\n\n  @each $key, $value in meta.keywords($args) {\n    $token: '{{#{$key}}}';\n    $length: string.length($token);\n    $index: string.index($result, $token);\n\n    @if $index {\n      $result: if($index > 1, string.slice($result, 1, $index - 1), '') +\n        $value +\n        string.slice($result, ($index + $length));\n\n      @if string.index($result, $token) {\n        $result: template($result, $args...);\n      }\n    }\n  }\n\n  @return $result;\n",
+      "line": {
+        "start": 13,
+        "end": 33
+      }
+    },
+    "group": [
+      "string"
+    ],
+    "parameter": [
+      {
+        "type": "string",
+        "name": "format"
+      },
+      {
+        "type": "arglist | map",
+        "name": "args"
+      }
+    ],
+    "return": {
+      "type": "string"
+    },
+    "access": "public",
+    "require": [],
+    "file": {
+      "path": "string/template.scss",
+      "name": "template.scss"
+    }
+  },
+  {
+    "description": "Uncapitalize a string.\n",
+    "commentRange": {
+      "start": 3,
+      "end": 9
+    },
+    "context": {
+      "type": "function",
+      "name": "uncapitalize",
+      "code": "\n  @return string.to-lower-case(string.slice($str, 1, 1)) + string.slice($str, 2);\n",
+      "line": {
+        "start": 11,
+        "end": 13
+      }
+    },
+    "group": [
+      "string"
+    ],
+    "parameter": [
+      {
+        "type": "string",
+        "name": "str"
+      }
+    ],
+    "return": {
+      "type": "string"
+    },
+    "access": "public",
+    "require": [],
+    "file": {
+      "path": "string/uncapitalize.scss",
+      "name": "uncapitalize.scss"
+    },
+    "aliased": [
+      "lcfirst"
+    ],
+    "aliasedGroup": [
+      {
+        "group": [
+          "undefined"
+        ],
+        "name": "lcfirst"
+      }
+    ],
+    "usedBy": [
+      {
+        "description": "",
+        "context": {
+          "type": "function",
+          "name": "lcfirst",
+          "code": "\n  @return uncapitalize($string);\n",
+          "line": {
+            "start": 17,
+            "end": 19
+          }
+        }
+      }
+    ]
+  },
+  {
+    "description": "",
+    "commentRange": {
+      "start": 15,
+      "end": 15
+    },
+    "context": {
+      "type": "function",
+      "name": "ucfirst",
+      "code": "\n  @return capitalize($string);\n",
+      "line": {
+        "start": 17,
+        "end": 19
+      }
+    },
+    "alias": "capitalize",
+    "access": "public",
+    "group": [
+      "undefined"
+    ],
+    "require": [
+      {
+        "type": "function",
+        "name": "capitalize"
+      }
+    ],
+    "file": {
+      "path": "string/capitalize.scss",
+      "name": "capitalize.scss"
+    }
+  },
+  {
+    "description": "",
+    "commentRange": {
+      "start": 15,
+      "end": 15
+    },
+    "context": {
+      "type": "function",
+      "name": "lcfirst",
+      "code": "\n  @return uncapitalize($string);\n",
+      "line": {
+        "start": 17,
+        "end": 19
+      }
+    },
+    "alias": "uncapitalize",
+    "access": "public",
+    "group": [
+      "undefined"
+    ],
+    "require": [
+      {
+        "type": "function",
+        "name": "uncapitalize"
+      }
+    ],
+    "file": {
+      "path": "string/uncapitalize.scss",
+      "name": "uncapitalize.scss"
+    }
+  }
+]

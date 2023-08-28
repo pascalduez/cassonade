@@ -1,0 +1,19 @@
+@use 'sass:string';
+
+/// Uncapitalize a string.
+/// --------
+/// @group string
+/// --------
+/// @param {string} $str
+/// --------
+/// @return {string}
+
+@function uncapitalize($str) {
+  @return string.to-lower-case(string.slice($str, 1, 1)) + string.slice($str, 2);
+}
+
+/// @alias uncapitalize
+
+@function lcfirst($string) {
+  @return uncapitalize($string);
+}

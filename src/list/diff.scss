@@ -1,0 +1,29 @@
+@use 'sass:list';
+
+/// Returns a list containing all the entries from `$list`
+/// that are not present in any of the other `$lists`.
+/// --------
+/// @group list
+/// --------
+/// @param {list} $list
+/// @param {arglist} $lists
+/// --------
+/// @return {list}
+
+@function diff($list, $lists...) {
+  $result: $list;
+
+  @each $list in $lists {
+    $temp: ();
+
+    @each $item in $result {
+      @if not list.index($list, $item) {
+        $temp: list.append($temp, $item, $separator: list.separator($result));
+      }
+    }
+
+    $result: $temp;
+  }
+
+  @return if(list.length($result) == 1, list.nth($result, 1), $result);
+}

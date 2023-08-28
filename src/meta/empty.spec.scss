@@ -1,0 +1,19 @@
+@use 'true' as *;
+@use './empty' as *;
+
+// In Sass: ('') == '', but not [''] == ''
+
+@include describe('[function] empty]') {
+  @include it('should properly test for empty values') {
+    @each $input in false, null, '', 0, (), ('') {
+      @include assert-equal(empty($input), true);
+    }
+  }
+
+  @include it('should properly test for non empty values') {
+    // prettier-ignore
+    @each $input in 8, yeah, [''], ('', ''), ('': '') {
+      @include assert-equal(empty($input), false);
+    }
+  }
+}
